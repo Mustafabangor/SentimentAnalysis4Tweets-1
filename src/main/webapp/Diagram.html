@@ -1,0 +1,45 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Visualization</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+         <!-- HIGHCHART -->        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>      
+    </head>
+    <body> 
+         <script type="text/javascript">            
+              $(function() {
+                $('#container').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Sentiment Analysis'
+                    },
+                    xAxis: {
+                        categories: ['Apples', 'Orange']
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Fruit eaten'
+                        }
+                    },
+                    series: [{
+                            name: 'Jane',
+                            data: [1, 12]
+                        }, {
+                            name: 'John',
+                            data: [5, 15]
+                        }]
+                });
+            });
+            </script>
+        <div id="container" style="width:100%; height:400px;"></div>
+        <div>TODO write content</div>
+    </body>
+</html>

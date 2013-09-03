@@ -1,0 +1,47 @@
+/* 
+    Document   : styles
+    Created on : Aug 22, 2013, 7:40:15 PM
+    Author     : daniel
+    Description:
+        Defines the styles of the .html files and .jsp files inside of this 
+        project.
+*/
+
+root { 
+    display: block;
+}
+
+#body {
+    background-image: url('background.jpg');
+}
+
+#content {
+    padding: 5em;
+    margin: 5em;
+    background-color: #385FA6;
+    color: antiquewhite;
+    font-size: 1.5em;
+}
+
+#compareContent {
+    padding: 5em;
+    margin: 5em;
+    background-color: #385FA6;
+    color: antiquewhite;
+    font-size: 1.5em;
+}
+
+#header {
+    font-size: 2.5em;
+    
+}
+#searchForm {
+    padding: 1.5em;
+    margin: 1.5em;
+}
+
+#dropbox {
+    background-color: antiquewhite;
+    color: brown;
+    margin: 1.5em;
+}

@@ -1,0 +1,22 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="resources/styles.css">
+        <title>Tweet Sentiment Analysis</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body id="body">
+       
+        <div id="content" align="center"><h1 id="header">Twitter Sentiment Analysis</h1>
+            <form id="searchForm" name="tweetsearch" action="http://localhost:8080/SentimentAnalysis4Tweets/sentiment" method="get">                            
+                Type in the search word: <input name="token" type="text" size="50">
+                <input style="margin: 1.5em; padding: 1em;" name="search" type="submit" value="SEARCH..."><br>
+                <input style="margin: 1.5em; padding: 1em;" name="compare" type="submit" value="COMPARE...">
+            </form>            
+        </div>
+    </body>
+</html>
