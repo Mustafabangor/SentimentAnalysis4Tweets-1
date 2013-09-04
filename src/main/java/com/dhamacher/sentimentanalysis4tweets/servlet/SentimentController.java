@@ -29,11 +29,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author daniel, mustafa
  */
 public class SentimentController extends HttpServlet {
+    
+    SentimentScriptEngine jsEngine = new SentimentScriptEngine();
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -57,7 +60,7 @@ public class SentimentController extends HttpServlet {
             RequestDispatcher dispatch = getServletConfig()
                     .getServletContext().getRequestDispatcher("/Result.jsp");
             String q = request.getParameter("token");
-            Search s = new Search(q, 3);
+            Search s = new Search(q, 2);
             Results r = new Results(s);
             String result[] = {r.getEntity(), "" + r.getPositive(), "" + r.getNegative(), "" + s.getTweets().size()};
             request.setAttribute("result", result);
@@ -105,6 +108,9 @@ public class SentimentController extends HttpServlet {
                 negative[j] = "" + result.getNegative();
                 j++;
             }
+            /*jsEngine.addBinding("positiveComparison", positive);
+            jsEngine.addBinding("negativeComparison", negative);
+            jsEngine.addBinding("brandsComparison", positive);*/
             request.setAttribute("positive", positive);
             request.setAttribute("negative", negative);    
             request.setAttribute("brands", brands);

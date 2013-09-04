@@ -26,7 +26,7 @@
     </head>
     <body>
         <%
-            /* Retireve the data computed from the SentimentController servlet */
+            /* Retireve the data computed from the SentimentController servlet */ 
             String brands[] = (String[]) request.getAttribute("brands");
             String positive[] = (String[]) request.getAttribute("positive");
             String negative[] = (String[]) request.getAttribute("negative");
@@ -54,11 +54,11 @@
                     neg.append(',');
                 }
                 neg.append('"').append(str).append('"');
-            }          
+            }      
         %>  
-        <h1>Results of the Sentiment Analysis for: <b><%=br.toString()%></b>,</h1>
+        <h1>Results of the Sentiment Analysis for: <b>JS TEST</b>,</h1>
         <script type="text/javascript">
-            $(function() {
+           $(function() {
                 var brands = [<%=br.toString()%>];                
                 var count = brands.length;
                 var pos = [<%=pos.toString()%>];

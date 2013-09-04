@@ -35,14 +35,15 @@ public class Search {
     public Search(String request, int option) {
         this.request = request;
         this.option = option;
-        operator = new TweetOperator(option);      
+        operator = new TweetOperator(option);
+        execute();
     } 
     
-    public static Search execute(String searchToken, int option) {
+    /*public static Search execute(String searchToken, int option) {
         Search search = new Search(searchToken, option);
         search.execute();
         return search;
-    }
+    }*/
    
     public LinkedList<LocalTweet> execute() {
         try {

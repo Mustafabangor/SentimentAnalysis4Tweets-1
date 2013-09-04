@@ -56,7 +56,7 @@ public class TweetOperator {
         } catch (Exception ex) {
             ex.printStackTrace();
         }        
-        if (mode == 3) {
+        if (mode == 3 || mode == 2) {
             TwitterFactory twitterFactory = new TwitterFactory(buildConfig());
             twitter = twitterFactory.getInstance();
         }        

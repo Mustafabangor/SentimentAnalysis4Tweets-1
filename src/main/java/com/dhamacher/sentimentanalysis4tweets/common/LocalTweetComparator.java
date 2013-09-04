@@ -28,6 +28,7 @@ public class LocalTweetComparator implements Comparator<LocalTweet>{
         this.query = query;
     }
     
+    @Override
     public int compare(LocalTweet o1, LocalTweet o2) {
         double dif = o1.getSentimentScore(query) - o2.getSentimentScore(query);
         if (dif < 0)

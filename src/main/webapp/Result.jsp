@@ -32,6 +32,13 @@
             LinkedList<Double> dv = (LinkedList<Double>) request.getAttribute("timelineValues");
             StringBuilder dates = new StringBuilder();
             StringBuilder values = new StringBuilder();
+            StringBuilder results = new StringBuilder();
+            for (String s : result) {
+                if (results.length() > 0) {
+                    results.append(',');
+                }
+                results.append('"').append(s).append('"');
+            }
             for (String s : d) {
                 if (dates.length() > 0) {
                     dates.append(',');
@@ -48,11 +55,7 @@
         <h1>Results of the Sentiment Analysis for: <b><%=result[0]%></b></h1>       
         <script type="text/javascript">
             $(function() {
-                var optionValues = new Array();
-                optionValues[0] = '<%=result[0]%>';
-                optionValues[1] = '<%=result[1]%>';
-                optionValues[2] = '<%=result[2]%>';
-                optionValues[3] = '<%=result[3]%>';
+                var optionValues = [<%=results.toString()%>];
                 var dates = [<%=dates.toString()%>];
                 var values = [<%=values.toString()%>];
                 var count = values.length;
@@ -61,6 +64,30 @@
                     v[i] = parseInt(values[i]);
                 }
                 $('#container').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Polarity Results Of ' + optionValues[0]
+                    },
+                    xAxis: {
+                        categories: [optionValues[0]]
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Total Tweets Used In Analysis: ' + optionValues[3]
+                        }
+                    },
+                    series: [{
+                            name: 'Positive',
+                            data: [parseInt(optionValues[1])]
+                        }, {
+                            name: 'Negative',
+                            data: [parseInt(optionValues[2])]
+                        }]
+                });
+
+                $('#trend').highcharts({
                     chart: {
                         zoomType: 'x',
                         spacingRight: 20
@@ -72,7 +99,7 @@
                         text: document.ontouchstart === undefined ?
                                 'Click and drag in the plot area to zoom in' :
                                 'Drag your finger over the plot to zoom in'
-                    }, 
+                    },
                     xAxis: {
                         type: 'datetime',
                         maxZoom: 14 * 24 * 3600000, // fourteen days
@@ -117,26 +144,11 @@
                             type: 'area',
                             name: 'Trend for ' + optionValues[0],
                             pointInterval: 24 * 3600 * 1000,
-                            pointStart: Date.UTC(2013, 08, 01),
+                            pointStart: dates[0], //Date.UTC(2013, 08, 01),
                             data: v
                         }]
                 });
             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             /*******************************************************************/
 
             /*$(function() {

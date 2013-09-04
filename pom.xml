@@ -22,13 +22,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>rhino</groupId>
+            <artifactId>js</artifactId>
+            <version>1.7R2</version>
+        </dependency>            
+        <dependency>
             <groupId>net.jeremybrooks</groupId>
             <artifactId>knicker</artifactId>
             <version>2.2.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/lib/knicker-2.2.0.jar</systemPath>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>wikiApiClient</groupId>
             <artifactId>wikiApiClient</artifactId>  
             <version>3.0</version>          

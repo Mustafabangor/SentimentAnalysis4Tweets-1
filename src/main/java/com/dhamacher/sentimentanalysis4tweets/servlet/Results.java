@@ -70,6 +70,7 @@ public class Results {
     }
     
     public void polarity(LinkedList<Double> scores) {
+        resetCounters();
         for (Double d : scores) {
             if (d > 0) 
                 positive++;            
@@ -78,6 +79,11 @@ public class Results {
             if (d == 0) 
                 neutral++;            
         }       
+    }
+    
+    private void resetCounters() {
+        positive = 0;
+        negative = 0;
     }
 
     /**
