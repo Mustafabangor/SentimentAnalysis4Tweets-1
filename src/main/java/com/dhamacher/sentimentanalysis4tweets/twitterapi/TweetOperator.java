@@ -52,7 +52,7 @@ public class TweetOperator {
         } catch (Exception ex) {
             ex.printStackTrace();
         }        
-        if (mode == 1) {
+        if (mode == 3) {
             TwitterFactory twitterFactory = new TwitterFactory(buildConfig());
             twitter = twitterFactory.getInstance();
         }        

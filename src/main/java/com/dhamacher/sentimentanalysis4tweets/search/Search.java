@@ -17,9 +17,11 @@ public class Search extends SwingWorker<LinkedList<LocalTweet>, Void> {
     private Query query;
     private LinkedList<LocalTweet> tweets;
     private TweetOperator operator;
+    private int option;
 
     public Search(String request, int option) {
         this.request = request;
+        this.option = option;
         operator = new TweetOperator(option);       
         doInBackground();
     }
@@ -86,5 +88,9 @@ public class Search extends SwingWorker<LinkedList<LocalTweet>, Void> {
         for (LocalTweet tweet : tweets) {
             tweet.computeScore();
         }
+    }
+    
+    public int getOption() {
+        return option;
     }
 }

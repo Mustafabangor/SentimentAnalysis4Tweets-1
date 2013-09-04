@@ -40,10 +40,13 @@ public class SentimentController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        /* If Compare button pressed use DB to pull scores from sentients table */
         if (request.getParameter("compare") != null) {
             comparison(request, response);
             RequestDispatcher dispatch = getServletConfig().getServletContext().getRequestDispatcher("/Comparison.jsp");
             dispatch.forward(request, response);
+            
+        /* Otherwise pull tweets from TwitterAPI and DB, analyze and visualize */
         } else {
             RequestDispatcher dispatch = getServletConfig()
                     .getServletContext().getRequestDispatcher("/Result.jsp");
@@ -53,7 +56,7 @@ public class SentimentController extends HttpServlet {
             String result[] = {r.getEntity(), "" + r.getPositive(), "" + r.getNegative(), "" + s.getTweets().size()};
             request.setAttribute("result", result);
             request.setAttribute("timeline", r.getDates());
-            request.setAttribute("timelineValues", getTimeLIneData(s.getTweets(), s.getQuery().getRequest()));
+            request.setAttribute("timelineValues", getTimeLineData(s.getTweets(), s.getQuery().getRequest()));
             dispatch.forward(request, response);
         }
     }
@@ -86,8 +89,7 @@ public class SentimentController extends HttpServlet {
             String negative[] = new String[brands.length];
             int j = 0;
             for (String s : brands) {
-                Search search = new Search(s, 1);
-                Results r = new Results(search);                
+                Results r = new Results(s);                
                 positive[j] = "" + r.getPositive();
                 negative[j] = "" + r.getNegative();
                 j++;
@@ -107,7 +109,7 @@ public class SentimentController extends HttpServlet {
      * @param query THe search string
      * @return A LinkedList with double values that was generated
      */
-    private LinkedList<Double> getTimeLIneData(LinkedList<LocalTweet> tweets, String query) {
+    private LinkedList<Double> getTimeLineData(LinkedList<LocalTweet> tweets, String query) {
         LinkedList<Double> values = new LinkedList<Double>();
         double max = 0.0, score = 0.0;
         int interval = Math.max(1, (int) tweets.size() / 100);

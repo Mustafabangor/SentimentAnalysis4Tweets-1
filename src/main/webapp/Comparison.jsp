@@ -41,12 +41,19 @@
                 neg.append('"').append(str).append('"');
             }          
         %>  
-        <h1>Results of the Sentiment Analysis for: <b><%=brands.toString()%></b>,</h1>
+        <h1>Results of the Sentiment Analysis for: <b><%=br.toString()%></b>,</h1>
         <script type="text/javascript">
             $(function() {
-                var brands = ['<%=br.toString()%>'];                
-                var pos = ['<%=pos.toString()%>'];
-                var neg = ['<%=neg.toString()%>'];             
+                var brands = [<%=br.toString()%>];                
+                var count = brands.length;
+                var pos = [<%=pos.toString()%>];
+                var neg = [<%=neg.toString()%>];
+                var p = new Array(count);
+                var n = new Array(count);
+                for (var i = 0; i < count; i++) {
+                    p[i] = parseInt(pos[i]);
+                    n[i] = parseInt(neg[i]);
+                }                  
                 $('#container').highcharts({
                     chart: {
                         type: 'column'
@@ -64,10 +71,10 @@
                     },
                     series: [{
                             name: 'Positive',
-                            data: pos
+                            data: p
                         }, {
                             name: 'Negative',
-                            data: neg
+                            data: n
                         }]
                 });
             });

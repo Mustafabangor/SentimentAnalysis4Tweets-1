@@ -13,7 +13,7 @@
         <!-- HIGHCHART -->        
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script src="http://code.highcharts.com/highcharts.js"></script> 
-        
+        <script src="http://code.highcharts.com/modules/exporting.js"></script>
     </head>
     <body>
         <%
@@ -33,71 +33,154 @@
                     values.append(',');
                 }
                 values.append(v);
-            }          
-        %>     
-        
-        <h1>Results of the Sentiment Analysis for: <b><%=result[0]%></b></h1>
-        
+            }
+        %>       
+        <h1>Results of the Sentiment Analysis for: <b><%=result[0]%></b></h1>       
         <script type="text/javascript">
-           /* function getQueryVariable(variable) {
-                var query = window.location.search.substring(1);
-                var vars = query.split('&');
-                for (var i = 0; i < vars.length; i++) {
-                    var pair = vars[i].split('=');
-                    if (decodeURIComponent(pair[0]) == variable) {
-                        return decodeURIComponent(pair[1]);
-                    }
-                }
-                alert('Query variable %s not found' + variable);
-            }; */          
-
             $(function() {
-                var dates = [<%=dates.toString()%>];
-                var values = [<%=values.toString()%>];
                 var optionValues = new Array();
                 optionValues[0] = '<%=result[0]%>';
                 optionValues[1] = '<%=result[1]%>';
-                optionValues[2] = '<%=result[2]%>';   
+                optionValues[2] = '<%=result[2]%>';
                 optionValues[3] = '<%=result[3]%>';
-                alert('Values: ' + optionValues[0] + ' ' + optionValues[1] + ' ' + optionValues[2]);
+                var dates = [<%=dates.toString()%>];
+                var values = [<%=values.toString()%>];
+                var count = values.length;
+                var v = new Array(count);
+                for (var i = 0; i < count; i++) {
+                    v[i] = parseInt(values[i]);
+                }
                 $('#container').highcharts({
                     chart: {
-                        type: 'column'
+                        zoomType: 'x',
+                        spacingRight: 20
                     },
                     title: {
-                        text: 'Polarity Results Of '+ optionValues[0]
+                        text: 'USD to EUR exchange rate from 2006 through 2008'
                     },
+                    subtitle: {
+                        text: document.ontouchstart === undefined ?
+                                'Click and drag in the plot area to zoom in' :
+                                'Drag your finger over the plot to zoom in'
+                    }, 
                     xAxis: {
-                        categories: [optionValues[0]]
+                        type: 'datetime',
+                        maxZoom: 14 * 24 * 3600000, // fourteen days
+                        title: {
+                            text: null
+                        }
                     },
                     yAxis: {
                         title: {
-                            text: 'Total Tweets Used In Analysis: ' + optionValues[3]
+                            text: 'Exchange rate'
+                        }
+                    },
+                    tooltip: {
+                        shared: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
+                                stops: [
+                                    [0, Highcharts.getOptions().colors[0]],
+                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            lineWidth: 1,
+                            marker: {
+                                enabled: false
+                            },
+                            shadow: false,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
                         }
                     },
                     series: [{
-                            name: 'Positive',
-                            data: [parseInt(optionValues[1])]
-                        }, {
-                            name: 'Negative',
-                            data: [parseInt(optionValues[2])]
+                            type: 'area',
+                            name: 'Trend for ' + optionValues[0],
+                            pointInterval: 24 * 3600 * 1000,
+                            pointStart: Date.UTC(2013, 08, 01),
+                            data: v
                         }]
                 });
-                $('#trend').highcharts({
-                    chart: {
-                        type: 'line'
-                    },
-                    title: {
-                        text: 'Trend Over Time for ' + optionValues[0]
-                    },                                
-                    series: [{
-                            name: 'Trend',
-                            data: values
-                        },]
-                });
             });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*******************************************************************/
+
+            /*$(function() {
+             var dates = [<%=dates.toString()%>];
+             var values = [<%=values.toString()%>];
+             var count = values.length;
+             var v = new Array(count);
+             for (var i = 0; i < count; i++) {
+             v[i] = parseInt(values[i]);                   
+             }   
+             var optionValues = new Array();
+             optionValues[0] = '<%=result[0]%>';
+             optionValues[1] = '<%=result[1]%>';
+             optionValues[2] = '<%=result[2]%>';   
+             optionValues[3] = '<%=result[3]%>';
+             alert('Values: ' + optionValues[0] + ' ' + optionValues[1] + ' ' + optionValues[2]);
+             $('#container').highcharts({
+             chart: {
+             type: 'column'
+             },
+             title: {
+             text: 'Polarity Results Of ' + optionValues[0]
+             },
+             xAxis: {
+             categories: [optionValues[0]]
+             },
+             yAxis: {
+             title: {
+             text: 'Total Tweets Used In Analysis: ' + optionValues[3]
+             }
+             },
+             series: [{
+             name: 'Positive',
+             data: [parseInt(optionValues[1])]
+             }, {
+             name: 'Negative',
+             data: [parseInt(optionValues[2])]
+             }]
+             });
+             $('#trend').highcharts({
+             chart: {
+             type: 'line'
+             },
+             title: {
+             text: 'Trend Over Time for ' + optionValues[0]
+             },                                
+             series: [{
+             name: 'Trend',
+             data: v
+             },]
+             });
+             });*/
         </script>
-        <div id="container" style="width:50%; height:800px; padding: 5em;"></div>    
+        <div id="container" style="width:80%; height:800px; padding: 5em;"></div>    
         <div id="trend" style="width:50%; height:800px; padding: 5em;"></div>   
     </body>
 </html>

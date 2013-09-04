@@ -1,16 +1,17 @@
 package com.dhamacher.sentimentanalysis4tweets.servlet;
 
 import com.dhamacher.sentimentanalysis4tweets.common.LocalTweet;
+import com.dhamacher.sentimentanalysis4tweets.database.Connector;
+import com.dhamacher.sentimentanalysis4tweets.database.Operator;
 import com.dhamacher.sentimentanalysis4tweets.search.Query;
 import com.dhamacher.sentimentanalysis4tweets.search.Search;
 import com.dhamacher.sentimentanalysis4tweets.twitterapi.TweetOperator;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,14 +38,43 @@ public class Results {
     private int negative = 0;
     private int neutral = 0;
     private LinkedList<String> dates;
+    Connector con = new Connector("twitter_sentiment");
 
     public Results(Search search) { 
-        this.search = search;
+        this.search = search;       
         this.query = search.getQuery();
         results = this.search.getTweets();        
         showTweetBreakdown();
         showSentimentOverTime();
         showTopTweets();
+    }
+    
+    public Results(String token) {
+        Operator op = Operator.getInstance();
+        long id = op.getEntityId(token);
+        String query = "Select * FROM sentiments where entity_id="+id;
+        LinkedList<Double> scores = new LinkedList<Double>();
+        try {
+            PreparedStatement ps = (PreparedStatement) con.getCon().prepareStatement(query);
+            ResultSet rs = (ResultSet) ps.executeQuery();
+            while (rs.next()) {
+                scores.add(rs.getDouble(4));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Results.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        polarity(scores);
+    }
+    
+    public void polarity(LinkedList<Double> scores) {
+        for (Double d : scores) {
+            if (d > 0) 
+                positive++;            
+            if (d < 0) 
+                negative++;            
+            if (d == 0) 
+                neutral++;            
+        }       
     }
 
     /**
@@ -53,7 +83,7 @@ public class Results {
      * This generates a pie chart displaying the number of positive, neutral and
      * negative tweets in our result set. No further details are given.
      */
-    private void showTweetBreakdown() { 
+    private void showTweetBreakdown() {         
         for (LocalTweet tweet : results) {
             if (tweet.getSentimentScore(query.getRequest()) > 0) 
                 positive++;            
