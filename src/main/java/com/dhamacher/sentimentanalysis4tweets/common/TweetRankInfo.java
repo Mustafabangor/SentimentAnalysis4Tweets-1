@@ -1,16 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* Copyright 2013 Daniel Hamacher, Mustafa Elkhunni
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.dhamacher.sentimentanalysis4tweets.common;
 
 /**
- * This is a class to keep a single tweet's ranking related information.
- * This is somewhat a hacky solution, but as Mary suggested, it is not good to
- * change tweets table at this point. So I basically created a new table with
- * relevant information (retweet count, isfavorited) and this class represent
- * entries of the table.
- * @author j
+ * 
+ * @author daniel, mustafa
  */
 public class TweetRankInfo {
     long retweetCount;
@@ -38,6 +44,5 @@ public class TweetRankInfo {
         this.retweetCount = retweetCount;
         this.favorited = favorited;
         this.id = id;
-    }
-    
+    }    
 }

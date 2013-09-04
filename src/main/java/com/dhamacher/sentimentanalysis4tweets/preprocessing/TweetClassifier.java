@@ -1,6 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* Copyright 2013 Daniel Hamacher, Mustafa Elkhunni
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.dhamacher.sentimentanalysis4tweets.preprocessing;
 
@@ -12,36 +22,35 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
 
 /**
  *
- * @author maryger
+ * @author daniel, mustafa
  */
-public class TweetClassifier
-{
+public class TweetClassifier {
 
-    /** The training data gathered so far. */
+    /**
+     * The training data gathered so far.
+     */
     private Instances m_Data = null;
-    /** The filter used to generate the word counts. */
+    /**
+     * The filter used to generate the word counts.
+     */
     private StringToWordVector m_Filter = new StringToWordVector();
-    /** The actual classifier. */
+    /**
+     * The actual classifier.
+     */
     private Classifier m_Classifier = new NaiveBayes();
     private boolean m_UpToDate;
 
     /* Create empty training dataset*/
-    public TweetClassifier()
-    {
+    public TweetClassifier() {
         String nameOfDataset = "MessageClassificationProblem";
-// Create vector of attributes.
         FastVector attributes = new FastVector(2);
-// Add attribute for holding messages.
         attributes.addElement(new Attribute("content", (FastVector) null));
-// Add class attribute.
         FastVector classValues = new FastVector(4);
         classValues.addElement("");
         classValues.addElement("neutral");
         classValues.addElement("negative");
         classValues.addElement("positive");
-
-        attributes.addElement(new Attribute("Class", classValues));
-        // Create dataset with initial capacity of 100, and set index
+        attributes.addElement(new Attribute("Class", classValues));       
         m_Data = new Instances(nameOfDataset, attributes, 100);
         m_Data.setClassIndex(m_Data.numAttributes() - 1);
     }
@@ -52,16 +61,11 @@ public class TweetClassifier
      * @param message the message content
      * @param classValue the class label
      */
-    public void updateData(String message, String classValue)
-    {
-// Make message into instance.
+    public void updateData(String message, String classValue) {
         Instance instance = makeInstance(message, m_Data);
-// Set class value for instance.
         instance.setClassValue(classValue);
-// Add instance to training data.
         m_Data.add(instance);
         m_UpToDate = false;
-
     }
 
     /**
@@ -71,14 +75,10 @@ public class TweetClassifier
      * @param data the header information
      * @return the generated Instance
      */
-    private Instance makeInstance(String text, Instances data)
-    {
-// Create instance of length two.
+    private Instance makeInstance(String text, Instances data) {
         Instance instance = new Instance(2);
-// Set value for message attribute
         Attribute messageAtt = data.attribute("content");
         instance.setValue(messageAtt, messageAtt.addStringValue(text));
-// Give instance access to attribute information from the dataset.
         instance.setDataset(data);
         return instance;
     }
@@ -89,24 +89,16 @@ public class TweetClassifier
      * @param message the message content
      * @throws Exception if classification fails
      */
-    public void classifyMessage(String message) throws Exception
-    {
-// Check whether classifier has been built.
-        if (m_Data.numInstances() == 0)
-        {
+    public void classifyMessage(String message) throws Exception {
+
+        if (m_Data.numInstances() == 0) {
             throw new Exception("No classifier available.");
         }
-// Check whether classifier and filter are up to date.
-        if (!m_UpToDate)
-        {
-// Initialize filter and tell it about the input format.
+        if (!m_UpToDate) {
             m_Filter.setInputFormat(m_Data);
-// Generate word counts from the training data.
             Instances filteredData = Filter.useFilter(m_Data, m_Filter);
-// Rebuild classifier.
             m_Classifier.buildClassifier(filteredData);
             m_UpToDate = true;
         }
-
     }
 }

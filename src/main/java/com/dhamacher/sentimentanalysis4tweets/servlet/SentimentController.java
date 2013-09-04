@@ -1,9 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* Copyright 2013 Daniel Hamacher, Mustafa Elkhunni
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.dhamacher.sentimentanalysis4tweets.servlet;
-
 import com.dhamacher.sentimentanalysis4tweets.common.LocalTweet;
 import com.dhamacher.sentimentanalysis4tweets.database.Connector;
 import com.dhamacher.sentimentanalysis4tweets.search.Search;
@@ -20,13 +29,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 /**
  *
- * @author daniel
+ * @author daniel, mustafa
  */
 public class SentimentController extends HttpServlet {
-
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -38,14 +45,13 @@ public class SentimentController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {        
         response.setContentType("text/html;charset=UTF-8");
         /* If Compare button pressed use DB to pull scores from sentients table */
         if (request.getParameter("compare") != null) {
-            comparison(request, response);
+            compare(request, response);
             RequestDispatcher dispatch = getServletConfig().getServletContext().getRequestDispatcher("/Comparison.jsp");
-            dispatch.forward(request, response);
-            
+            dispatch.forward(request, response);            
         /* Otherwise pull tweets from TwitterAPI and DB, analyze and visualize */
         } else {
             RequestDispatcher dispatch = getServletConfig()
@@ -61,7 +67,12 @@ public class SentimentController extends HttpServlet {
         }
     }
 
-    private void comparison(HttpServletRequest request, HttpServletResponse response) {        
+    /**
+     * 
+     * @param request
+     * @param response 
+     */
+    private void compare(HttpServletRequest request, HttpServletResponse response) {        
         try {
             /* Get DB connection */
             Connection con = new Connector("twitter_sentiment").getCon();
@@ -89,9 +100,9 @@ public class SentimentController extends HttpServlet {
             String negative[] = new String[brands.length];
             int j = 0;
             for (String s : brands) {
-                Results r = new Results(s);                
-                positive[j] = "" + r.getPositive();
-                negative[j] = "" + r.getNegative();
+                Results result = new Results(s);                
+                positive[j] = "" + result.getPositive();
+                negative[j] = "" + result.getNegative();
                 j++;
             }
             request.setAttribute("positive", positive);
@@ -132,6 +143,7 @@ public class SentimentController extends HttpServlet {
         // Create and return a new Data object containing these values:
         return values;
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

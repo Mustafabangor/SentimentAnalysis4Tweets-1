@@ -1,22 +1,28 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* Copyright 2013 Daniel Hamacher, Mustafa Elkhunni
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.dhamacher.sentimentanalysis4tweets.twitterapi;
-
 import com.dhamacher.sentimentanalysis4tweets.common.LocalTweet;
 import com.dhamacher.sentimentanalysis4tweets.common.LocalTweetComparator;
 import com.dhamacher.sentimentanalysis4tweets.common.TweetRankInfo;
 import com.dhamacher.sentimentanalysis4tweets.common.User;
 import com.dhamacher.sentimentanalysis4tweets.database.Operator;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import twitter4j.IDs;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -26,11 +32,9 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.Configuration;
-
-
 /**
  *
- * @author dama
+ * @author daniel, mustafa
  */
 public class TweetOperator {
 
@@ -39,10 +43,10 @@ public class TweetOperator {
     public static final int DB_AND_ONLINE = 3;
     public static final int DB_ONLY = 1;
     public static final int ONLINE_ONLY = 2;
-    private static final String consumerKey = "XwEagf0oSlyPE59Z86fQ";
-    private static final String consumerSecret = "8nNHG4Tbz8JH57YecP87vwheX464dWM9wufJnMdRLY";
-    private static final String tokenKey = "89405802-ez85Nkr7r2mn2EfFdS0MXPadMsw1E5YCx6oixdbIg";
-    private static final String tokenSecret = "2ykkYdU5qiloVML43CRaffb79RF7MIC9Q3mb9Y7o";
+    private static final String CONSUMER_KEY = "XwEagf0oSlyPE59Z86fQ";
+    private static final String CONSUMER_SECRET = "8nNHG4Tbz8JH57YecP87vwheX464dWM9wufJnMdRLY";
+    private static final String ACCESS_TOKEN = "89405802-ez85Nkr7r2mn2EfFdS0MXPadMsw1E5YCx6oixdbIg";
+    private static final String ACCESS_TOKEN_SECRET = "2ykkYdU5qiloVML43CRaffb79RF7MIC9Q3mb9Y7o";
     Twitter twitter;
 
     public TweetOperator(int mode) {
@@ -67,10 +71,10 @@ public class TweetOperator {
                  * Consumer Key (2) Consumer Secret (3) Access Token (4) Access
                  * Token Secret
                  */
-                .setOAuthConsumerKey("XwEagf0oSlyPE59Z86fQ")
-                .setOAuthConsumerSecret("8nNHG4Tbz8JH57YecP87vwheX464dWM9wufJnMdRLY")
-                .setOAuthAccessToken("89405802-ez85Nkr7r2mn2EfFdS0MXPadMsw1E5YCx6oixdbIg")
-                .setOAuthAccessTokenSecret("2ykkYdU5qiloVML43CRaffb79RF7MIC9Q3mb9Y7o");
+                .setOAuthConsumerKey(CONSUMER_KEY)
+                .setOAuthConsumerSecret(CONSUMER_SECRET)
+                .setOAuthAccessToken(ACCESS_TOKEN)
+                .setOAuthAccessTokenSecret(ACCESS_TOKEN_SECRET);
         return cb.build();
     }
 

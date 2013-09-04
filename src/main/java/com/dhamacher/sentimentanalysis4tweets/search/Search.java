@@ -1,17 +1,30 @@
+/* Copyright 2013 Daniel Hamacher, Mustafa Elkhunni
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.dhamacher.sentimentanalysis4tweets.search;
 import com.dhamacher.sentimentanalysis4tweets.common.LocalTweet;
 import com.dhamacher.sentimentanalysis4tweets.pagerank.Pagerank;
 import com.dhamacher.sentimentanalysis4tweets.sentiment.Analysis;
 import com.dhamacher.sentimentanalysis4tweets.twitterapi.TweetOperator;
 import java.util.LinkedList;
-import javax.swing.SwingWorker;
 
 /**
  * Search handler class.
  *
- * @author daniel
+ * @author daniel, mustafa
  */
-public class Search extends SwingWorker<LinkedList<LocalTweet>, Void> {
+public class Search {
 
     private String request;
     private Query query;
@@ -22,16 +35,16 @@ public class Search extends SwingWorker<LinkedList<LocalTweet>, Void> {
     public Search(String request, int option) {
         this.request = request;
         this.option = option;
-        operator = new TweetOperator(option);       
-        doInBackground();
-    }
+        operator = new TweetOperator(option);      
+    } 
     
-    public Search() {
-        
+    public static Search execute(String searchToken, int option) {
+        Search search = new Search(searchToken, option);
+        search.execute();
+        return search;
     }
-
-    @Override
-    public LinkedList<LocalTweet> doInBackground() {
+   
+    public LinkedList<LocalTweet> execute() {
         try {
             query = new Query(this.request);
             loadTweets();

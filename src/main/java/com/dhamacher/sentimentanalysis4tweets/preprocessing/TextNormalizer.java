@@ -1,10 +1,17 @@
-/***************************************
- * This reformates the tweets
- * eliminates multiple charactes to one word greaaaaaaat (TO BE IMPLEMENTED)
- * eliminates references @MaryGer
- * eliminates urls inside tweet
- * ask Matthjis for smileys
- ***************************************/
+/* Copyright 2013 Daniel Hamacher, Mustafa Elkhunni
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.dhamacher.sentimentanalysis4tweets.preprocessing;
 
 import java.util.HashMap;
@@ -12,85 +19,62 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author maryger
+ * @author daniel, mustafa
  */
-public class TextNormalizer
-{
+public class TextNormalizer {
 
     static String tweet = "";
 
-    public TextNormalizer(String tweet)
-    {
-
+    public TextNormalizer(String tweet) {
         this.tweet = tweet;
-
     }
 
-    public String getTweet()
-    {
+    public String getTweet() {
         return tweet;
     }
 
     /**
      * Get tweet normalized without noise
+     *
      * @param Tweet
-     * @return 
+     * @return
      */
-    public static String getTweetWithoutUrlsAnnotations(String Tweet)
-    {
-
+    public static String getTweetWithoutUrlsAnnotations(String Tweet) {
         StringTokenizer tokens = new StringTokenizer(Tweet, " ");
         String newTweet = "";
-        while (tokens.hasMoreTokens())
-        {
+        while (tokens.hasMoreTokens()) {
             String temp = tokens.nextToken();
-            if (!temp.contains("@") && !temp.contains("http"))
-            {
-
+            if (!temp.contains("@") && !temp.contains("http")) {
                 newTweet += temp + " ";
-
             }
-
-
-
         }
-
         tweet = "";
         tweet = newTweet;
         return tweet;
-
     }
 
     /**
-     * Try to detect a smiley at the given tweet and it returns the appropriate score
-     * add this score to the general score as well
-     * ask MIhai for tokenizer
-     * @return 
+     * Try to detect a smiley at the given tweet and it returns the appropriate
+     * score add this score to the general score as well ask MIhai for tokenizer
+     *
+     * @return
      */
-    public static double detectSmiley(String tweet, HashMap<String, Double> smileys)
-    {
-
+    public static double detectSmiley(String tweet, HashMap<String, Double> smileys) {
         double score = 0;
-
-        StringTokenizer toks = new StringTokenizer(tweet, " ");
-        while (toks.hasMoreTokens())
-        {
+        StringTokenizer toks = new StringTokenizer(tweet, " ");        
+        while (toks.hasMoreTokens()) {
             String token = toks.nextToken();
-            if (smileys.containsKey(token))
-            {
+            if (smileys.containsKey(token)) {
                 score = smileys.get(token);
                 return score;
-
             }
-
         }
-
         return score;
     }
-    
+
     public static String removeDuplicates(String s) {
         StringBuilder noDupes = new StringBuilder();
-        int pos = 0 ;
+        int pos = 0;
         int len = s.length();
         int curLen = 0;
         while (pos < len) {
@@ -99,6 +83,7 @@ public class TextNormalizer
             } else {
                 ++curLen;
             }
+
             if (curLen < 3) {
                 noDupes.append(s.charAt(pos));
             }
@@ -107,25 +92,7 @@ public class TextNormalizer
         return noDupes.toString();
     }
 
-    public static String toLowerCase(String tw)
-    {
-
-
+    public static String toLowerCase(String tw) {
         return tw.toLowerCase();
-
-    }
-    
-    
-    //TODO USE THE SOURCE CODE FROM ANALYSIS CLASS sentimentanalysis.sentiment
-    
-    
-
-    public static void main(String[] args)
-    {
-        String testStrings[] = {"GoodBoy", "greeeeaaat", "oooooo",
-            "yeeeaaah", "abcde", "abcdeeee"};
-        for (String s : testStrings) {
-            System.out.println(s + "  ==>  " + removeDuplicates(s));
-        }
     }
 }

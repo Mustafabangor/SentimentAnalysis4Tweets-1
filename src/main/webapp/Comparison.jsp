@@ -1,7 +1,17 @@
-<%-- 
-    Document   : Comparison
-    Created on : Sep 2, 2013, 2:28:08 AM
-    Author     : daniel
+<%--    
+    Copyright 2013 Mustafa Elkhunni
+ 
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+         http://www.apache.org/licenses/LICENSE-2.0
+ 
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 --%>
 <%@page import="java.util.LinkedList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,12 +26,17 @@
     </head>
     <body>
         <%
+            /* Retireve the data computed from the SentimentController servlet */
             String brands[] = (String[]) request.getAttribute("brands");
             String positive[] = (String[]) request.getAttribute("positive");
             String negative[] = (String[]) request.getAttribute("negative");
+            
+            /* The string builder object are used to pasre java arrays inside js arrays */
             StringBuilder br = new StringBuilder();
             StringBuilder pos = new StringBuilder();
-            StringBuilder neg = new StringBuilder();            
+            StringBuilder neg = new StringBuilder(); 
+            
+            /* Parsing process */
             for (String str : brands) {
                 if (br.length() > 0) {
                     br.append(',');
